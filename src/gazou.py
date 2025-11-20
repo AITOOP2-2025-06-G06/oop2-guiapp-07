@@ -25,7 +25,17 @@ def image_edit():
     # 書き込み処理
     cv2.imwrite('output_images/lecture05_01_x24099.png',google_img)
 
+    # 保存がうまくできたかの判定
+    save_path = 'output_images/lecture05_01_x24099.png'
+    result = cv2.imwrite(save_path, google_img)
+
+    # GUIの表示
     app = QApplication(sys.argv)
-    label = QLabel("画像が保存されました。\noutput_images/lecture05_01_x24099.png")
+    if result :
+        msg = f'画像が保存されました。\n{save_path}'
+    else :
+        msg = '画像がうまく保存されませんでした'
+
+    label = QLabel(msg)
     label.show()
     app.exec()
