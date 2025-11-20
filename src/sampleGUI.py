@@ -55,11 +55,12 @@ if __name__ == "__main__":
 import sys
 import cv2
 import numpy as np
-from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QVBoxLayout
+from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QMessageBox
 from PySide6.QtGui import QPixmap, QImage
 from PySide6.QtCore import QTimer
 
 from src.button import MyVideoCapture
+from src.gazou import image_edit
 
 
 class CameraWindow(QWidget):
@@ -75,12 +76,17 @@ class CameraWindow(QWidget):
         self.button = QPushButton("撮影")
         self.button.clicked.connect(self.save_photo)
 
+        self.edit_button = QPushButton("画像を編集")
+        self.edit_button.clicked.connect(self.edit_photo)
+        self.edit_button.setEnabled(False)  # 最初は無効化
+
         self.label = QLabel("カメラ起動中...")
         self.label.setFixedSize(640, 480)
 
         layout = QVBoxLayout()
         layout.addWidget(self.label)
         layout.addWidget(self.button)
+        layout.addWidget(self.edit_button)
         self.setLayout(layout)
 
         # タイマーで一定間隔にカメラ読み取り
@@ -109,6 +115,23 @@ class CameraWindow(QWidget):
 
         cv2.imwrite("output_images/captured_from_gui.png", self.current_frame)
         print("撮影しました！ output_images/captured_from_gui.png")
+        self.edit_button.setEnabled(True)  # 撮影後に編集ボタンを有効化
+
+    def edit_photo(self):
+        """撮影した画像を編集"""
+        success, message = image_edit()
+        
+        # メッセージボックスで結果を表示
+        msg_box = QMessageBox(self)
+        if success:
+            msg_box.setIcon(QMessageBox.Information)
+            msg_box.setWindowTitle("成功")
+        else:
+            msg_box.setIcon(QMessageBox.Warning)
+            msg_box.setWindowTitle("エラー")
+        
+        msg_box.setText(message)
+        msg_box.exec()
 
 
 if __name__ == "__main__":
