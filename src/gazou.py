@@ -9,7 +9,11 @@ from PySide6 import QtGui,QtCore
 def image_edit():
     # 画像をローカル変数に保存する
     google_img : cv2.Mat = cv2.imread('images/google.png')
-    capture_img : cv2.Mat = cv2.imread('images/camera_capture.png')
+    capture_img : cv2.Mat = cv2.imread('output_images/captured_from_gui.png')
+
+    if capture_img is None:
+        print("エラー: 撮影画像が見つかりません")
+        return False, "撮影画像が見つかりません"
 
     g_hight, g_width, g_channel = google_img.shape
     c_hight, c_width, c_channel = capture_img.shape
@@ -23,19 +27,10 @@ def image_edit():
                 google_img[y, x]=capture_img[y%c_hight,x%c_width]
 
     # 書き込み処理
-    cv2.imwrite('output_images/lecture05_01_x24099.png',google_img)
-
-    # 保存がうまくできたかの判定
     save_path = 'output_images/lecture05_01_x24099.png'
     result = cv2.imwrite(save_path, google_img)
 
-    # GUIの表示
-    app = QApplication(sys.argv)
-    if result :
-        msg = f'画像が保存されました。\n{save_path}'
-    else :
-        msg = '画像がうまく保存されませんでした'
-
-    label = QLabel(msg)
-    label.show()
-    app.exec()
+    if result:
+        return True, f'画像が保存されました。\n{save_path}'
+    else:
+        return False, '画像がうまく保存されませんでした'
