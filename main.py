@@ -1,6 +1,10 @@
-from src.lecture05_01 import lecture05_01
-from src.lecture05_01_x24099 import lecture05_01_x24099
+
+from src.sampleGUI import CameraWindow
+from PySide6.QtWidgets import QApplication
+import sys
 
 if __name__ == "__main__":
-    # lecture05_01()
-    lecture05_01_x24099()
+    app = QApplication(sys.argv)
+    win = CameraWindow()
+    win.show()
+    sys.exit(app.exec())
