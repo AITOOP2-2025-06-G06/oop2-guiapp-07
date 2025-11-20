@@ -2,7 +2,7 @@ import sys
 import numpy as np
 import cv2
 from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout
-from my_module.K21999.lecture05_camera_image_capture import MyVideoCapture
+from src.viewPicture import open_image_directory
 
 def startView():
     app = QApplication(sys.argv)
@@ -18,9 +18,14 @@ def startView():
     # ボタンの作成
     button = QPushButton("カメラキャプチャを開く")
     button.clicked.connect(lambda: print("ボタンが押されました"))  # ToDo:ここにカメラを開くのを書く
+
+    button2 = QPushButton("過去に合成した画像を見る")
+    button2.clicked.connect(open_image_directory) 
     
     # レイアウトにボタンを追加
     layout.addWidget(button)
+
+    layout.addWidget(button2)
     
     # ウィンドウにレイアウトを設定
     window.setLayout(layout)
