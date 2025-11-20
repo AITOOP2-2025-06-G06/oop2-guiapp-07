@@ -1,6 +1,5 @@
-from src.lecture05_01 import lecture05_01
-from src.lecture05_01_x24099 import lecture05_01_x24099
+from src.startView import startView
 
 if __name__ == "__main__":
     # lecture05_01()
-    lecture05_01_x24099()
+    startView()
